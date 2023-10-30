@@ -53,4 +53,4 @@ async def compare_texts(texts: Texts = Body(...)):
 
 # Running the Application
 if __name__ == '__main__':
-    uvicorn.run("compare_text:app",reload=True)
+    uvicorn.run("main:app",reload=True)
