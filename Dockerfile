@@ -1,20 +1,18 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9
+FROM ubuntu:18.04
 
-# Set the working directory to /app
-WORKDIR /app
+RUN apt upgrade && apt update && apt install -y \
+    software-properties-common \
+    unzip \
+    git \
+    python3-pip \
+    python3-dev  \
+    python3-venv \
+    wget
 
-# Copy the current directory contents into the container at /app
-COPY . /app
+RUN pip3 install --upgrade pip
+ADD . compare-text-project/
+RUN cd compare-text-project && pip3 install  --no-cache -r requirements.txt
 
-# Install any needed packages specified in requirements.txt
-RUN pip install -r requirements.txt
+ENTRYPOINT [ "sh", "-c" ]
 
-# Make port 8000 available to the world outside this container
-EXPOSE 8000
-
-# Define environment variable
-ENV NAME env
-
-# Run app.py when the container launches
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python3 compare-text-project/main.py"]
